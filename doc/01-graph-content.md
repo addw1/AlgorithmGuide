@@ -37,3 +37,72 @@ For a directed graph G = (V, E), u is said to be reachable to v if there exists 
 A directed graph is said to be **strongly connected** if its nodes are mutually accessible.
 A directed graph is said to be **weakly connected** if a connected graph can be obtained by replacing edges with undirected edges.
 Similarly to connected components, there are weakly connected components (extremely weakly connected subgraphs) and strongly connected components (extremely strongly connected subgraphs).
+
+### The store of graph
+
+**Store Edge**
+
+```C++
+using namespace std;
+
+struct Edge {
+    // u -> v
+    int u, v;
+};
+
+int n, m;
+
+vector<Edge> edges;
+vector<bool> vis;
+
+
+bool findEdge(int u, int v) {
+    for (const auto & edge : edges) {
+        if(edge.u == u && edge.v == v) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void dfs(int u) {
+    // avoid repeatedly visiting a node
+    if (vis[u] == true) return;
+    vis[u] = true;
+    // find the edge 
+    for (const auto & edge : edges) {
+        if(edge.u == u) {
+            dfs(edge.v);
+        }
+    }
+}
+```
+
+Complexity:
+Visiting the whole graph O(mn).
+
+**Linked list**
+
+```C++
+int n, m;
+vector<bool> vis;
+vector<vector<int>> adj;
+
+bool find_edge(int u, int v) {
+  for (int i = 0; i < adj[u].size(); ++i) {
+    if (adj[u][i] == v) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void dfs(int u) {
+  if (vis[u]) return;
+  vis[u] = true;
+  for (int i = 0; i < adj[u].size(); ++i) dfs(adj[u][i]);
+}
+```
+
+Complexity:
+Visiting the whole graph O(m + n).
