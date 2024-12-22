@@ -13,14 +13,19 @@ def minutes_since_last_departure(departure_times, current_time):
     # Initialize 'last_departure' to None. This will store the latest departure < current_time.
     last_departure = None
 
-    for d in departures_in_minutes:
-        if d < current_time_minutes:  # bus departed strictly before current time
-            last_departure = d
-
-    # If no bus departed before current_time, return -1
-    if last_departure is None:
-        return -1
-
+    # b search
+    l = 0
+    r = len(departures_in_minutes)
+    while l < r:
+        mid = (l + r) // 2
+        if departures_in_minutes[mid] == current_time_minutes:
+            return -1
+        elif departures_in_minutes[mid] < current_time_minutes:
+            l = mid + 1
+        else:
+            r = mid
+    last_index = 0 if l == 0 else l - 1
+    last_departure = departures_in_minutes[last_index]
     # Otherwise, return the difference in minutes
     return current_time_minutes - last_departure
 
